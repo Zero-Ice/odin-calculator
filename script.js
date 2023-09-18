@@ -21,6 +21,7 @@ let operator = "";
 let result = NaN;
 
 let display = document.querySelector("p");
+let resultDisplay = document.querySelector("#result");
 
 function operate(op, A, B) {
   A = parseFloat(A);
@@ -42,24 +43,28 @@ function operate(op, A, B) {
       break;
   }
 
-  if (Number.isInteger(result)) result = result.toFixed(2);
+  result = result.toFixed(2);
 }
 
-function updateDisplay() {
+function updateDisplay(equal = false) {
   display.innerText = `${operandA} ${operator} ${operandB}`;
+  if (equal) display.innerText += " =\n";
 
   if (!isNaN(result) || result === "Error") {
-    display.innerText += ` = ${result}`;
+    resultDisplay.innerText = `${result}`;
   }
 }
 
 function buttonPressed(buttonID) {
   if (buttonID === "=") {
     operate(operator, operandA, operandB);
-    updateDisplay();
+    updateDisplay(true);
     return;
-  } else if (buttonID === "clear") {
+  } else if (buttonID === "AC") {
     reset();
+    return;
+  } else if (buttonID === "del") {
+    delOperand();
     return;
   }
 
@@ -88,7 +93,8 @@ function reset() {
   operandB = "";
   operator = "";
   result = NaN;
-  display.innerText = "0";
+  display.innerText = "-";
+  resultDisplay.innerText = "-";
 }
 
 const buttons = document.querySelectorAll("button");
@@ -99,15 +105,19 @@ buttons.forEach((button) => {
   button.addEventListener("click", () => buttonPressed(buttonName));
 });
 
+function delOperand() {
+  if (!operator) {
+    // Remove A
+    operandA = operandA.slice(0, operandA.length - 1);
+  } else {
+    // Remove B
+    operandB = operandB.slice(0, operandB.length - 1);
+  }
+  updateDisplay();
+}
+
 document.onkeydown = (e) => {
   if (e.key === "Backspace") {
-    if (!operator) {
-      // Remove A
-      operandA = operandA.slice(0, operandA.length - 1);
-    } else {
-      // Remove B
-      operandB = operandB.slice(0, operandB.length - 1);
-    }
-    updateDisplay();
+    delOperand();
   }
 };

@@ -1,6 +1,30 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.calculator-container {
+  background-color: grey;
+  padding: 32px;
+  border-radius: 16px;
+}
+
+.result-container {
+  background-color: white;
+  padding: 16px;
+  border-radius: 16px;
+  box-sizing: border-box;
+  margin-bottom: 16px;
+}
+
 button {
   width: 64px;
   height: 64px;
   font-size: 32px;
   border-radius: 4px;
+}
+
+p {
+  text-align: end;
 }
